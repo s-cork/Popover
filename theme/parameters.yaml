@@ -133,5 +133,4 @@ color_scheme:
       colors:
       - {name: Secondary 500, color: '#9E9E9E'}
       - {name: Secondary 700, color: '#616161'}
-  colors:
-  - {name: Black, color: '#000000'}
+  colors: []
