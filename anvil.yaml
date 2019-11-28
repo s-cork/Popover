@@ -1,10 +1,10 @@
 services: []
 package_name: popover
 allow_embedding: false
-name: popOver
+name: popover
 runtime_options: {version: 1, server_version: python2-sandbox}
 metadata: {}
-startup_form: Form1
+startup_form: null
 native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n Distributed\
     \ under the MIT License (license terms are at http://opensource.org/licenses/MIT).\n\
     \ */\n //// (function(e,t){'object'==typeof exports&&'undefined'!=typeof module?module.exports=t():'function'==typeof\
@@ -711,7 +711,7 @@ native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n 
     \           animation: animation,\n                      delay: delay,\n     \
     \                html: html\n                     \n                     }); \
     \   \n\n  \n};\n  \nfunction pop(popper, behaviour){\n  var popper = popper.v._anvil.element\n\
-    \  $(popper).popover(behaviour)\n};\n  \n</script>\n\n<style>\n  .anvil-panel-col\
+    \  $(popper).popover(behaviour)\n};\n   \n</script>\n\n<style>\n  .anvil-panel-col\
     \ {\n\toverflow-x: visible;\n}\n  \n  .anvil-container-overflow {\n  overflow-x:\
     \ visible;\n  overflow-y: visible;\n}\n  .nav-holder .content {\n   overflow-x:\
     \ visible; \n}\n  .anvil-role-card {\n   overflow: visible; \n  }\n\n</style>\n\
