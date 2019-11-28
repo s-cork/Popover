@@ -12,7 +12,7 @@ components:
   layout_properties: {grid_position: 'CZCTBG,LTTOSN'}
 - type: Button
   properties: {text: button_1}
-  name: button_1
+  name: button
   layout_properties: {grid_position: 'UVRILG,MCHGAX'}
   event_bindings: {click: button_1_click}
 - type: Link

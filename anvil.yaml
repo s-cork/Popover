@@ -708,4 +708,6 @@ native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n 
     \  element.popover({ content: that_element, placement: \"left\", html:'true'});\n\
     \  //$(element).children(':first').popover('show')\n    \n\n  \n};\n  \n</script>\n\
     \n  "}
+dependency_order: []
+dependency_code: {}
 renamed: true

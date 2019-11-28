@@ -18,6 +18,7 @@ class Form1(Form1Template):
     js.call_js('popOver',self.primary_color_1, self.form2)
     self.form2.popper = self.primary_color_1
     print(self.primary_color_1)
+    
 
 
 

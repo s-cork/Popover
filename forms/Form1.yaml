@@ -12,6 +12,13 @@ components:
     name: primary_color_1
     layout_properties: {grid_position: 'BBRWGH,RHVAVT'}
     event_bindings: {click: primary_color_1_click}
+  - type: Button
+    properties: {role: secondary-color, align: center, tooltip: '', border: '', enabled: true,
+      foreground: '', visible: true, text: primary_color_2, font_size: null, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: primary_color_2
+    layout_properties: {grid_position: 'AMDZJQ,LXJKNU'}
 - type: FlowPanel
   properties: {}
   name: navbar_links

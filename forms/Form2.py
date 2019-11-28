@@ -19,6 +19,7 @@ class Form2(Form2Template):
     """This method is called when the link is clicked"""
     if self.popper:
       print(self.popper)
+      print(self.popper.parent)
       self.popper.text = 'hell yeah'
 
 
