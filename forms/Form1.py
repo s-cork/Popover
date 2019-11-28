@@ -1,5 +1,6 @@
 from anvil import *
 from .Form2 import Form2
+from .popover import *
 
 class Form1(Form1Template):
 
@@ -10,6 +11,8 @@ class Form1(Form1Template):
     self.form2 = Form2()
     
     print(self.primary_color_1)
+    
+    self.primary_color_1.popover(self.form2)
 #     self.content_panel.add_component(self.form2)
 
     # Any code you write here will run when the form opens.
@@ -28,8 +31,8 @@ class Form1(Form1Template):
 
   def form_show(self, **event_args):
     """This method is called when the HTML panel is shown on the screen"""
-    js.call_js('popOver',self.primary_color_1, self.form2)
-    js.call_js('popOver',self.link_1, self.form2)
+#     js.call_js('popOver',self.primary_color_1, self.form2)
+#     js.call_js('popOver',self.link_1, self.form2)
 
   def link_1_click(self, **event_args):
     """This method is called when the link is clicked"""
