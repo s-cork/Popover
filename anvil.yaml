@@ -1,5 +1,5 @@
 services: []
-package_name: popOver
+package_name: popover
 allow_embedding: false
 name: popOver
 runtime_options: {version: 1, server_version: python2-sandbox}
@@ -7,7 +7,7 @@ metadata: {}
 startup_form: Form1
 native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n Distributed\
     \ under the MIT License (license terms are at http://opensource.org/licenses/MIT).\n\
-    \ */\n  (function(e,t){'object'==typeof exports&&'undefined'!=typeof module?module.exports=t():'function'==typeof\
+    \ */\n //// (function(e,t){'object'==typeof exports&&'undefined'!=typeof module?module.exports=t():'function'==typeof\
     \ define&&define.amd?define(t):e.Popper=t()})(this,function(){'use strict';function\
     \ e(e){return e&&'[object Function]'==={}.toString.call(e)}function t(e,t){if(1!==e.nodeType)return[];var\
     \ o=getComputedStyle(e,null);return t?o[t]:o}function o(e){return'HTML'===e.nodeName?e:e.parentNode||e.host}function\
@@ -703,15 +703,19 @@ native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n 
     Bootstrap's JavaScript requires at least jQuery v1.9.1 but less than v4.0.0\"\
     )}(e),t.Util=k,t.Alert=L,t.Button=P,t.Carousel=x,t.Collapse=R,t.Dropdown=Nt,t.Modal=kt,t.Popover=Pt,t.Scrollspy=xt,t.Tab=Rt,t.Tooltip=Lt,Object.defineProperty(t,\"\
     __esModule\",{value:!0})});\n//# sourceMappingURL=bootstrap.bundle.min.js.map\n\
-    </script>\n\n\n<script>\n  \n\n\nfunction popOver(me, that) {\n  console.log(me.v._anvil.element[\"\
-    0\"], typeof(me.v._anvil.element[\"0\"]))\n  var element = me.v._anvil.element//[\"\
-    0\"].firstElementChild\n  var that_element = that.v._anvil.element\n  console.log(element)\n\
-    \  console.log(typeof(element))\n  console.log(element[\"0\"].firstElementChild)\n\
-    \  $(element).popover({ content: that_element, placement: \"left\", \n       \
-    \               html:'true', \n                      trigger: \"focus\", \n  \
-    \                    delay: { \"show\": 100, \"hide\": 0 }\n                 \
-    \    });\n  //$(element).children(':first').popover('show')\n    \n\n  \n};\n\
-    \  \n</script>\n\n  "}
+    </script>\n\n\n<script>\n  \nfunction popover( popper, content, title, placement,\
+    \ trigger, animation, delay, html ) {\n  var popper = popper.v._anvil.element\n\
+    \  \n  if (html){\n  \tvar content = content.v._anvil.element\n    };\n  \n  $(popper).popover({\
+    \ content: content, \n                     title : title,\n                  \
+    \   placement: placement,\n                     trigger: trigger,\n          \
+    \           animation: animation,\n                      delay: delay,\n     \
+    \                html: html\n                     \n                     }); \
+    \   \n\n  \n};\n  \nfunction pop(popper, behaviour){\n  var popper = popper.v._anvil.element\n\
+    \  $(popper).popover(behaviour)\n};\n  \n</script>\n\n<style>\n  .anvil-panel-col\
+    \ {\n\toverflow-x: visible;\n}\n  \n  .anvil-container-overflow {\n  overflow-x:\
+    \ visible;\n  overflow-y: visible;\n}\n  .nav-holder .content {\n   overflow-x:\
+    \ visible; \n}\n  .anvil-role-card {\n   overflow: visible; \n  }\n\n</style>\n\
+    \n  "}
 dependency_order: []
 dependency_code: {}
 renamed: true

@@ -6,20 +6,36 @@ from anvil import *
 #
 #    Module1.say_hello()
 #
+print('running')
 
-
-
-
-def popover(self, content, title='', 
+def popover(self, content, 
+            title='', 
             placement = 'right',
-            container=False, 
+            trigger = 'manual',
             animation=True, 
-            delay={ "show": 100, "hide": 100 },
-            trigger = 'focus',
-            offset = 0
+            delay={ "show": 100, "hide": 100 }
            ):
-  js.call_js('popOver', self, content, title, placement, container, animation, delay, trigger, offset )
-  
+  """self - the element you wish to have the popover
+  content - either text or an anvil component or Form
+  placement -  right, left, top, bottom
+  trigger - manual, focus, hover, click
+  animation - boolean
+  delay - {'show': 100, 'hide': 100}
+  """
+  if isinstance(content, str):
+    html = False
+  else:
+    html = True
+    content.popper = self
+
+  js.call_js('popover', self, content, title, placement, trigger, animation, delay, html)
+
+def pop(self,behaviour):
+  js.call_js('pop', self, behaviour)
   
 Button.popover = popover
 Link.popover = popover
+Button.pop = pop
+Link.pop = pop
+
+

@@ -1,5 +1,6 @@
 from anvil import *
 from .Form2 import Form2
+from .Form3 import Form3
 from .popover import *
 
 class Form1(Form1Template):
@@ -9,7 +10,8 @@ class Form1(Form1Template):
     self.init_components(**properties)
     
     self.form2 = Form2()
-    
+    self.form3 = Form3()
+    self.link_2.popover(self.form3,title='Example', placement='top')
     print(self.primary_color_1)
     
     self.primary_color_1.popover(self.form2)
@@ -22,6 +24,7 @@ class Form1(Form1Template):
 #     js.call_js('popOver',self.primary_color_1)
 #     print(event_args['sender'])
     self.form2.popper = self.primary_color_1
+    self.primary_color_1.pop('toggle')
 #     print(self.primary_color_1)
     
 
@@ -34,9 +37,18 @@ class Form1(Form1Template):
 #     js.call_js('popOver',self.primary_color_1, self.form2)
 #     js.call_js('popOver',self.link_1, self.form2)
 
+
   def link_1_click(self, **event_args):
     """This method is called when the link is clicked"""
     self.form2.popper = self.link_1
+
+  def link_2_click(self, **event_args):
+    """This method is called when the link is clicked"""
+    self.link_2.pop('toggle')
+  
+  def me(self):
+    print('memememe')
+
 
 
 
