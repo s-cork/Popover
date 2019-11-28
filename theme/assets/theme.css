@@ -149,7 +149,7 @@ a:hover, a:active {
 
 .nav-holder {
   flex-grow: 1;
-  overflow-y: auto;
+/*   overflow-y: auto; */
 }
 
 /* Mobile and desktop margins for content */
@@ -336,7 +336,7 @@ a:hover, a:active {
 
 .nav-holder .content {
   flex: 1;
-  overflow-x: hidden;
+/*   overflow-x: hidden; */
 }
 
 /* Components: App Bar */
@@ -769,3 +769,6 @@ textarea.anvil-component[disabled] {
 https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-material-design-elevations
 */
 
+.anvil-panel-col {
+	overflow-x: visible;
+}
