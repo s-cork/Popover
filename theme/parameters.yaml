@@ -134,6 +134,4 @@ color_scheme:
       - {name: Secondary 500, color: '#9E9E9E'}
       - {name: Secondary 700, color: '#616161'}
   colors:
-  - {name: Gray 800, color: '#424242'}
-  - {name: Gray 900, color: '#212121'}
   - {name: Black, color: '#000000'}
