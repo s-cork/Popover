@@ -13,12 +13,12 @@ native_deps: {head_html: "\n<script>\n  \nfunction popover( popper, content, tit
     \           animation: animation,\n                      delay: delay,\n     \
     \                html: html\n                     });    \n  \n};\n  \nfunction\
     \ pop(popper, behaviour){\n  var popper = popper.v._anvil.element\n  $(popper).popover(behaviour)\n\
-    };\n   \n</script>\n\n<style>\n  .anvil-panel-col {\n\toverflow-x: visible;\n\
-    }\n  \n  .anvil-container-overflow {\n  overflow-x: visible;\n  overflow-y: visible;\n\
-    }\n  .nav-holder .content {\n   overflow-x: visible; \n}\n  .anvil-role-card {\n\
-    \   overflow: visible; \n  }\n  .nav-holder {\n  overflow-y: visible;\n}\n  \n\
-    \  .nav-holder, .left-nav, .left-nav-placeholder {\n  overflow-x: visible;\n\n\
-    }\n\n</style>\n\n  "}
+    };\n   \n</script>\n\n<style>\n  /*required to make sure popovers are visible*/\n\
+    \  .anvil-panel-col {\n\toverflow-x: visible;\n}\n  \n.anvil-container-overflow\
+    \ {\n  overflow-x: visible;\n  overflow-y: visible;\n}\n  .nav-holder .content\
+    \ {\n   overflow-x: visible; \n}\n  .anvil-role-card {\n   overflow: visible;\
+    \ \n  }\n  .nav-holder {\n  overflow-y: visible;\n}\n  \n  .nav-holder, .left-nav,\
+    \ .left-nav-placeholder {\n  overflow-x: visible;\n\n}\n\n</style>\n\n  "}
 dependency_order: []
 dependency_code: {}
 renamed: true
