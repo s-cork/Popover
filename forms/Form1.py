@@ -20,5 +20,10 @@ class Form1(Form1Template):
     print(self.primary_color_1)
     
 
+  def primary_color_2_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    self.primary_color_1.text = 'done'
+
+
 
 

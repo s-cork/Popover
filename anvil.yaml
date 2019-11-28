@@ -703,11 +703,11 @@ native_deps: {head_html: "<script>\n  /*\n Copyright (C) Federico Zivolo 2017\n 
     Bootstrap's JavaScript requires at least jQuery v1.9.1 but less than v4.0.0\"\
     )}(e),t.Util=k,t.Alert=L,t.Button=P,t.Carousel=x,t.Collapse=R,t.Dropdown=Nt,t.Modal=kt,t.Popover=Pt,t.Scrollspy=xt,t.Tab=Rt,t.Tooltip=Lt,Object.defineProperty(t,\"\
     __esModule\",{value:!0})});\n//# sourceMappingURL=bootstrap.bundle.min.js.map\n\
-    </script>\n\n\n<script>\n\nfunction popOver(me, that) {\n  var element = $(me.v._anvil.element).children(':first')\n\
-    \  var that_element = that.v._anvil.element\n  console.log(element)\n  console.log(that_element)\n\
-    \  element.popover({ content: that_element, placement: \"left\", html:'true'});\n\
-    \  //$(element).children(':first').popover('show')\n    \n\n  \n};\n  \n</script>\n\
-    \n  "}
+    </script>\n\n\n<script>\n  \n\n\nfunction popOver(me, that) {\n  var element =\
+    \ me.v._anvil.element\n  var that_element = that.v._anvil.element\n  console.log(element)\n\
+    \  console.log(typeof(element))\n  console.log(that_element)\n  element.popover({\
+    \ content: that_element, placement: \"left\", html:'true'});\n  //$(element).children(':first').popover('show')\n\
+    \    \n\n  \n};\n  \n</script>\n\n  "}
 dependency_order: []
 dependency_code: {}
 renamed: true
