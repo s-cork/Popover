@@ -9,7 +9,7 @@ https://getbootstrap.com/docs/4.0/components/popovers/
 def popover(self, content, 
             title='', 
             placement = 'right',
-            trigger = 'hover',
+            trigger = 'click',
             animation=True, 
             delay={ "show": 100, "hide": 100 }
            ):
