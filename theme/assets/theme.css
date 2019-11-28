@@ -599,7 +599,7 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
 /* Component: Card */
 
 .anvil-role-card {
-  overflow: hidden;
+/*   overflow: hidden; */
   border-radius: 2px;
   background-color: white;
   padding: 8px 12px;
