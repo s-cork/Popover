@@ -7,7 +7,7 @@ metadata: {}
 startup_form: Form1
 native_deps: {head_html: "\n<script>\n  \nfunction popover( popper, content, title,\
     \ placement, trigger, animation, delay, html ) {\n  var popper = popper.v._anvil.element\n\
-    \  \n  if (html){\n  \tvar content = content.v._anvil.element\n    };\n  \n  $(popper).popover({\
+    \n  if (html){\n  \tvar content = content.v._anvil.element\n    };\n  \n  $(popper).popover({\
     \ content: content, \n                     title : title,\n                  \
     \   placement: placement,\n                     trigger: trigger,\n          \
     \           animation: animation,\n                      delay: delay,\n     \
