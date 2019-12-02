@@ -16,7 +16,7 @@ def popover(self, content,
   """should be called by a button or link
   content - either text or an anvil component or Form
   placement -  right, left, top, bottom (for left/right best to have links and buttons inside flow panels)
-  trigger - manual, focus, hover, click
+  trigger - manual, focus, hover, click (can be a combination of two e.g. 'hover focus')
   animation - True or False
   delay - {'show': 100, 'hide': 100}
   
@@ -33,8 +33,10 @@ def popover(self, content,
 
 def pop(self,behaviour):
   """behaviour can be any of
-  show, hide, toggle, dispose, enable, disable, toggleEnabled, update"""
-  js.call_js('pop', self, behaviour)
+  show, hide, toggle, dispose, enable, disable, toggleEnabled, update
+  check bootstrap documentation for details
+  also added is_visible"""
+  return js.call_js('pop', self, behaviour)
   
 Button.popover = popover
 Link.popover = popover
