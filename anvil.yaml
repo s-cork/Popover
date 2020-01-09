@@ -2,7 +2,7 @@ services: []
 package_name: popover
 allow_embedding: false
 name: popover
-runtime_options: {version: 1, server_version: python2-sandbox}
+runtime_options: {version: 1, server_version: python2-sandbox, client_version: '2'}
 metadata: {}
 startup_form: Form1
 native_deps: {head_html: "\n<script>\n  \nfunction popover(popper, content, title,\
