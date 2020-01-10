@@ -2,8 +2,8 @@ from anvil import *
 """for more information visit the w3 bootstrap popover page
 https://www.w3schools.com/bootstrap4/bootstrap_ref_js_popover.asp
 
-or the bootstrap popover page
-https://getbootstrap.com/docs/4.0/components/popovers/
+or the bootstrap popover page for v 3.3.7
+https://bootstrapdocs.com/v3.3.6/docs/javascript/#popovers
 """
 
 def popover(self, content, 
@@ -33,9 +33,10 @@ def popover(self, content,
 
 def pop(self,behaviour):
   """behaviour can be any of
-  show, hide, toggle, dispose, enable, disable, toggleEnabled, update
-  check bootstrap documentation for details
-  also added is_visible"""
+  show, hide, toggle, destroy (included with bootstrap 3.3.7)
+  features added not in bootstrap 3.3.7 docs:
+  update  - updates position of popover - useful for dynamic content that changes the size of the popover
+  is_visible: returns True or False if the popover is visible """
   return js.call_js('pop', self, behaviour)
   
 Button.popover = popover
