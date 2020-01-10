@@ -1,4 +1,4 @@
-from anvil import *
+from anvil import Button, Link, js
 """for more information visit the w3 bootstrap popover page
 https://www.w3schools.com/bootstrap4/bootstrap_ref_js_popover.asp
 
