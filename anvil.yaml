@@ -6,10 +6,11 @@ runtime_options: {version: 1, server_version: python2-sandbox, client_version: '
 metadata: {}
 startup_form: Form1
 native_deps: {head_html: "\n<script>\n  \nfunction popover(popper, content, title,\
-    \ placement, trigger, animation, delay, html) {\n\n    if (popper.v._anvil.componentSpec.type\
-    \ == \"Button\") {\n        var popper = popper.v._anvil.element[\"0\"].firstElementChild\n\
-    \    }\n    else { var popper = popper.v._anvil.element };\n\n\n    if (html)\
-    \ {\n        var content = content.v._anvil.element\n    };\n\n    $(popper).popover({\n\
+    \ placement, trigger, animation, delay, html) {\n\tconsole.log(popper)\n    if\
+    \ (popper.v._anvil.componentSpec.type == \"Button\") {\n        var popper = popper.v._anvil.element[\"\
+    0\"].firstElementChild\n    }\n    else { var popper = popper.v._anvil.element\
+    \ };\n\tconsole.log(popper)\n\n    if (html) {\n      console.log('html')\n  \
+    \      var content = content.v._anvil.element\n    };\n\n    $(popper).popover({\n\
     \        content: content,\n        title: title,\n        placement: placement,\n\
     \        trigger: trigger,\n        animation: animation,\n        delay: delay,\n\
     \        html: html\n    });\n\n};\n\nfunction pop(popper, behaviour) {\n    if\
