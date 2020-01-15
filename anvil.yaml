@@ -6,18 +6,18 @@ runtime_options: {version: 1, server_version: python2-sandbox, client_version: '
 metadata: {}
 startup_form: Form1
 native_deps: {head_html: "\n<script>\n  \nfunction popover(popper, content, title,\
-    \ placement, trigger, animation, delay, html) {\n\tconsole.log(popper)\n    if\
-    \ (popper.v._anvil.componentSpec.type == \"Button\") {\n        var popper = popper.v._anvil.element[\"\
+    \ placement, trigger, animation, delay, html) {\n    if (popper.v._anvil.element[\"\
+    0\"].classList.contains(\"anvil-button\")) {\n        var popper = popper.v._anvil.element[\"\
     0\"].firstElementChild\n    }\n    else { var popper = popper.v._anvil.element\
-    \ };\n\tconsole.log(popper)\n\n    if (html) {\n      console.log('html')\n  \
-    \      var content = content.v._anvil.element\n    };\n\n    $(popper).popover({\n\
-    \        content: content,\n        title: title,\n        placement: placement,\n\
-    \        trigger: trigger,\n        animation: animation,\n        delay: delay,\n\
-    \        html: html\n    });\n\n};\n\nfunction pop(popper, behaviour) {\n    if\
-    \ (popper.v._anvil.componentSpec.type == \"Button\") {\n        var popper = popper.v._anvil.element[\"\
-    0\"].firstElementChild\n    }\n    else { var popper = popper.v._anvil.element\
-    \ };\n\n    if (behaviour == 'is_visible') {\n      return $(popper).next('div.popover').is(\"\
-    :visible\");\n    };\n  \n  \tif (behaviour == 'update'){\n      if ($(popper).next('div.popover').is(\"\
+    \ };\n\n\n    if (html) {\n        var content = content.v._anvil.element\n  \
+    \  };\n\n    $(popper).popover({\n        content: content,\n        title: title,\n\
+    \        placement: placement,\n        trigger: trigger,\n        animation:\
+    \ animation,\n        delay: delay,\n        html: html\n    });\n\n};\n\nfunction\
+    \ pop(popper, behaviour) {\n    if (popper.v._anvil.componentSpec.type == \"Button\"\
+    ) {\n        var popper = popper.v._anvil.element[\"0\"].firstElementChild\n \
+    \   }\n    else { var popper = popper.v._anvil.element };\n\n    if (behaviour\
+    \ == 'is_visible') {\n      return $(popper).next('div.popover').is(\":visible\"\
+    );\n    };\n  \n  \tif (behaviour == 'update'){\n      if ($(popper).next('div.popover').is(\"\
     :visible\"))\n      {\n          $(popper).next('div.popover').addClass(\"PopNoTransition\"\
     );\n          $(popper).popover('show');\n          $(popper).next('div.popover').removeClass(\"\
     PopNoTransition\");\n      }\n    }\n  else {\n    $(popper).popover(behaviour)\n\
