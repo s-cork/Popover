@@ -13,9 +13,9 @@ native_deps: {head_html: "\n<script>\n  \nfunction popover(popper, content, titl
     \  };\n\n    $(popper).popover({\n        content: content,\n        title: title,\n\
     \        placement: placement,\n        trigger: trigger,\n        animation:\
     \ animation,\n        delay: delay,\n        html: html\n    });\n\n};\n\nfunction\
-    \ pop(popper, behaviour) {\n    if (popper.v._anvil.componentSpec.type == \"Button\"\
-    ) {\n        var popper = popper.v._anvil.element[\"0\"].firstElementChild\n \
-    \   }\n    else { var popper = popper.v._anvil.element };\n\n    if (behaviour\
+    \ pop(popper, behaviour) {\n    if (popper.v._anvil.element[\"0\"].classList.contains(\"\
+    anvil-button\")) {\n        var popper = popper.v._anvil.element[\"0\"].firstElementChild\n\
+    \    }\n    else { var popper = popper.v._anvil.element };\n\n    if (behaviour\
     \ == 'is_visible') {\n      return $(popper).next('div.popover').is(\":visible\"\
     );\n    };\n  \n  \tif (behaviour == 'update'){\n      if ($(popper).next('div.popover').is(\"\
     :visible\"))\n      {\n          $(popper).next('div.popover').addClass(\"PopNoTransition\"\
