@@ -36,7 +36,7 @@ def pop(self,behaviour):
   show, hide, toggle, destroy (included with bootstrap 3.3.7)
   features added not in bootstrap 3.3.7 docs:
   update  - updates position of popover - useful for dynamic content that changes the size of the popover
-  is_visible: returns True or False if the popover is visible """
+  is_visible: returns True or False if the popover is visible - note a popover will only be visible after it has animated onto screen so may need to sleep(.15) before calling """
   return js.call_js('pop', self, behaviour)
   
 Button.popover = popover
