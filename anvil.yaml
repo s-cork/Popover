@@ -9,20 +9,19 @@ native_deps: {head_html: "\n<script>\n  \nfunction get_jQuery_obj(component) {\n
     \   // deal with buttons being the surrounding div rather than the button element\n\
     \    if (component.v._anvil.element[0].classList.contains(\"anvil-button\")) {\n\
     \        return $(component.v._anvil.element[0].firstElementChild)\n       //\
-    \ jQuery object\n    }\n    else { return component.v._anvil.element //jQuery\
-    \ object};\n  }\n  };\n  \nfunction popover(popper, content, title, placement,\
-    \ trigger, animation, delay, html) {\n    var popper = get_jQuery_obj(popper)\n\
-    \    if (html) {\n        var content = content.v._anvil.element\n    };\n\n \
-    \   $(popper).popover({\n        content: content,\n        title: title,\n  \
-    \      placement: placement,\n        trigger: trigger,\n        animation: animation,\n\
-    \        delay: delay,\n        html: html\n    });\n\n};\n\nfunction pop(popper,\
-    \ behaviour) {\n   var popper = get_jQuery_obj(popper)\n\n    if (behaviour ==\
-    \ 'is_visible') {\n      return popper.next('div.popover').is(\":visible\");\n\
-    \    };\n  \n  \tif (behaviour == 'update'){\n      // this update method updates\
-    \ the position of the popover - useful for dynamic content that changes the size\
-    \ of the popover. \n      if (popper.next('div.popover').is(\":visible\"))\n \
-    \     {\n          popper.next('div.popover').addClass(\"PopNoTransition\");\n\
-    \          popper.popover('show');\n          popper.next('div.popover').removeClass(\"\
+    \ jQuery object\n    }\n    else { return component.v._anvil.element}; //jQuery\
+    \ object\n  }\n  };\n  \nfunction popover(popper, content, title, placement, trigger,\
+    \ animation, delay, html) {\n    var popper = get_jQuery_obj(popper)\n    if (html)\
+    \ {\n        var content = content.v._anvil.element\n    };\n\n    $(popper).popover({\n\
+    \        content: content,\n        title: title,\n        placement: placement,\n\
+    \        trigger: trigger,\n        animation: animation,\n        delay: delay,\n\
+    \        html: html\n    });\n\n};\n\nfunction pop(popper, behaviour) {\n   var\
+    \ popper = get_jQuery_obj(popper)\n\n    if (behaviour == 'is_visible') {\n  \
+    \    return popper.next('div.popover').is(\":visible\");\n    };\n  \n  \tif (behaviour\
+    \ == 'update'){\n      // this update method updates the position of the popover\
+    \ - useful for dynamic content that changes the size of the popover. \n      if\
+    \ (popper.next('div.popover').is(\":visible\"))\n      {\n          popper.next('div.popover').addClass(\"\
+    PopNoTransition\");\n          popper.popover('show');\n          popper.next('div.popover').removeClass(\"\
     PopNoTransition\");\n      }\n    }\n  else {\n    popper.popover(behaviour)\n\
     \  };\n};\n   \n</script>\n\n<style>\n  /*required to make sure popovers are visible*/\n\
     \  .anvil-panel-col {\n\toverflow-x: visible;\n}\n  \n.anvil-container-overflow\
