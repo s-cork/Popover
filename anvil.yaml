@@ -10,7 +10,7 @@ native_deps: {head_html: "\n<script>\n  \nfunction get_jQuery_obj(component) {\n
     \    if (component.v._anvil.element[0].classList.contains(\"anvil-button\")) {\n\
     \        return $(component.v._anvil.element[0].firstElementChild)\n       //\
     \ jQuery object\n    }\n    else { return component.v._anvil.element}; //jQuery\
-    \ object\n  }\n  };\n  \nfunction popover(popper, content, title, placement, trigger,\
+    \ object\n  };\n  \nfunction popover(popper, content, title, placement, trigger,\
     \ animation, delay, html) {\n    var popper = get_jQuery_obj(popper)\n    if (html)\
     \ {\n        var content = content.v._anvil.element\n    };\n\n    $(popper).popover({\n\
     \        content: content,\n        title: title,\n        placement: placement,\n\
