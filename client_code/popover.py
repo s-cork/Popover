@@ -1,4 +1,4 @@
-from anvil import Button, Link, js
+from anvil import Button, Link, js, Label
 """for more information visit the w3 bootstrap popover page
 https://www.w3schools.com/bootstrap4/bootstrap_ref_js_popover.asp
 
@@ -43,5 +43,6 @@ Button.popover = popover
 Link.popover = popover
 Button.pop = pop
 Link.pop = pop
-
+Label.popover = popover
+Label.pop = pop
 

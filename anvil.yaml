@@ -2,9 +2,9 @@ services: []
 package_name: popover
 allow_embedding: false
 name: popover
-runtime_options: {version: 1, server_version: python2-sandbox, client_version: '2'}
+runtime_options: {version: 2, server_version: python2-sandbox, client_version: '2'}
 metadata: {}
-startup_form: Form1
+startup_form: null
 native_deps: {head_html: "\n<script>\n  \nfunction get_jQuery_obj(component) {\n \
     \   // deal with buttons being the surrounding div rather than the button element\n\
     \    if (component.v._anvil.element[0].classList.contains(\"anvil-button\")) {\n\
