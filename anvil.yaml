@@ -32,6 +32,5 @@ native_deps: {head_html: "\n<script>\n  \nfunction get_jQuery_obj(component) {\n
     \    -moz-transition: none !important;\n    -webkit-transition: none !important;\n\
     \    -o-transition: none !important;\n    transition: none !important;\n}\n\n\
     </style>\n\n  "}
-dependency_order: []
-dependency_code: {}
+db_schema: []
 renamed: true
