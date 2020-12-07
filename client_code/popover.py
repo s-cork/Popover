@@ -1,48 +1,193 @@
-from anvil import Button, Link, js, Label
-"""for more information visit the w3 bootstrap popover page
-https://www.w3schools.com/bootstrap4/bootstrap_ref_js_popover.asp
+import anvil as _anvil
+from anvil.js.window import jQuery as _S
+"""
+    popover
+    Copyright 2020 Stu Cork
 
-or the bootstrap popover page for v 3.3.7
-https://bootstrapdocs.com/v3.3.6/docs/javascript/#popovers
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Source code published at https://github.com/s-cork/popover
+
+    for more information visit the w3 bootstrap popover page
+    https://www.w3schools.com/bootstrap4/bootstrap_ref_js_popover.asp
+
+    or the bootstrap popover page for v 3.3.7
+    https://bootstrapdocs.com/v3.3.6/docs/javascript/#popovers
 """
 
-def popover(self, content, 
-            title='', 
-            placement = 'right',
-            trigger = 'click',
-            animation=True, 
-            delay={ "show": 100, "hide": 100 }
-           ):
-  """should be called by a button or link
-  content - either text or an anvil component or Form
-  placement -  right, left, top, bottom (for left/right best to have links and buttons inside flow panels)
-  trigger - manual, focus, hover, click (can be a combination of two e.g. 'hover focus')
-  animation - True or False
-  delay - {'show': 100, 'hide': 100}
-  
-  if the content is a form then the form will have an attribute self.popper added
-  """
-  if isinstance(content, str):
-    html = False
-  else:
-    html = True
-    # add the popper to the content form
-    content.popper = self
 
-  js.call_js('popover', self, content, title, placement, trigger, animation, delay, html)
+def popover(self, content,
+            title='',
+            placement='right',
+            trigger='click',
+            animation=True,
+            delay={"show": 100, "hide": 100},
+            max_width=None
+            ):
+    """should be called by a button or link
+    content - either text or an anvil component or Form
+    placement -  right, left, top, bottom (for left/right best to have links and buttons inside flow panels)
+    trigger - manual, focus, hover, click (can be a combination of two e.g. 'hover focus')
+    animation - True or False
+    delay - {'show': 100, 'hide': 100}
+    max_width - bootstrap default is 276px you might want this wider
 
-def pop(self,behaviour):
-  """behaviour can be any of
-  show, hide, toggle, destroy (included with bootstrap 3.3.7)
-  features added not in bootstrap 3.3.7 docs:
-  update  - updates position of popover - useful for dynamic content that changes the size of the popover
-  is_visible: returns True or False if the popover is visible - note a popover will only be visible after it has animated onto screen so may need to sleep(.15) before calling """
-  return js.call_js('pop', self, behaviour)
-  
-Button.popover = popover
-Link.popover = popover
-Button.pop = pop
-Link.pop = pop
-Label.popover = popover
-Label.pop = pop
+    if the content is a form then the form will have an attribute self.popper added
+    """
+    html = not isinstance(content, str)
+    if html:
+        content.popper = self   # add the popper to the content form
+        content = _anvil.js.get_dom_node(content)  # get the dom node
 
+    max_width = _default_max_width if max_width is None else max_width
+
+    # can effect the title of the popover so temporarily set it to ''
+    tooltip, self.tooltip = self.tooltip, ''
+
+    popper_id = _get_random_string(5)
+    popper_element = _get_jquery_popper_element(self)
+    popper_element.popover({
+        'content': content,
+        'title': title,
+        'placement': placement,
+        'trigger': trigger,
+        'animation': animation,
+        'delay': delay,
+        'html': html,
+        'template': _template.format(popper_id, max_width),
+        'container': 'body'
+    })
+
+    if tooltip:
+        self.tooltip = tooltip
+        # otherwise the tooltip doesn't work for Buttons
+        popper_element.attr('title', tooltip)
+
+    popper_element.on("show.bs.popover", lambda e: _visible_popovers.update({popper_id: popper_element}))\
+                  .on("hide.bs.popover", lambda e: _visible_popovers.pop(popper_id, None))\
+                  .addClass('anvil-popover')\
+                  .attr('popover_id', popper_id)
+
+
+def pop(self, behavior):
+    """behaviour can be any of
+    show, hide, toggle, destroy (included with bootstrap 3.3.7)
+
+    features added not in bootstrap 3.3.7 docs:
+    update  - updates position of popover - useful for dynamic content that changes the size of the popover
+    shown: returns True or False if the popover is visible - note a popover will only be visible after it has animated onto screen so may need to sleep(.15) before calling
+    is_visible: same as shown
+    """
+    popper_element = _get_jquery_popper_element(self)
+    if behavior is 'shown' or behavior is 'is_visible':
+        return _is_visible(popper_element)
+    elif behavior is 'update':
+        return _update_positions()
+    try:
+        popper_element.popover(behavior)
+    except:
+        raise ValueError('unrecognized behavior: {}'.format(behavior))
+
+
+# this is the default behavior
+def dismiss_on_outside_click(dismiss=True):
+    """hide popovers when a user clicks outside the popover
+    this is the default behavior 
+    """
+    _S('body').off('click', _hide_popovers_on_outside_click)
+    if dismiss:
+        _S('body').on('click', _hide_popovers_on_outside_click)
+
+
+_default_max_width = ''
+
+
+def set_default_max_width(width):
+    """update the default max width - this is 276px by default - useful for wider components"""
+    global _default_width
+    _default_width = width
+
+
+for _ in [_anvil.Button, _anvil.Link, _anvil.Label]:
+    _.popover = popover
+    _.pop = pop
+
+######## helper functions ########
+
+
+def _update_positions(*args):
+    _S('.popover').addClass("PopNoTransition")\
+                  .popover('show')\
+                  .removeClass("PopNoTransition")
+
+
+_anvil.js.window.window.addEventListener('resize', _update_positions)
+
+
+def _is_visible(popper_element):
+    return popper_element.attr('popover_id') in _visible_popovers
+
+
+def _get_jquery_popper_element(popper):
+    if isinstance(popper, _anvil.Button):
+        # use the button node not the div node so that point is in the right place
+        element = _anvil.js.get_dom_node(popper).firstElementChild
+    else:
+        element = _anvil.js.get_dom_node(popper)
+    return _S(element)  # return the jquery element
+
+
+def _hide_popovers_on_outside_click(e):
+    target = e.target
+    if target.classList.contains('anvil-popover'):
+        nearest_id = target.getAttribute('popover_id')
+    else:
+        nearest_id = _S(target).closest('.anvil-popover').attr('popover_id')
+    visible_popovers = _visible_popovers.copy()
+    for popover_id in visible_popovers:  # use copy since we don't want the dict to change size
+        if nearest_id is not popover_id:
+            popper = visible_popovers[popover_id].popover('hide')
+            try:
+                popper.data('bs.popover').inState.click = False
+                # hack for click https://github.com/twbs/bootstrap/issues/16732
+            except:
+                pass
+
+
+# make this the default behaviour
+dismiss_on_outside_click(True)
+
+
+from random import choice as _random_choice
+from string import ascii_letters as _letters
+def _get_random_string(_len):
+    return ''.join(_random_choice(_letters) for _ in range(_len))
+
+
+_visible_popovers = {}
+
+_template = '<div class="popover anvil-popover" role="tooltip" popover_id={} style="max-width: {};"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+
+# temp style for updating popovers without transition animations
+_S("""<style>
+.PopNoTransition {
+    -moz-transition: none !important;
+    -webkit-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+</style>
+""").appendTo(_S('head'))
+
+
+if __name__ == "__main__":
+    _ = _anvil.ColumnPanel()
+    _.set_event_handler('show', lambda **e: _anvil.Notification(
+        'oops, popover is a dependency', style='danger', timeout=None).show())
+    _anvil.open_form(_)
+
+_ = None
