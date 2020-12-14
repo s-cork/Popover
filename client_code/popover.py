@@ -66,7 +66,7 @@ def popover(self, content,
         self.tooltip = tooltip
         # otherwise the tooltip doesn't work for Buttons
         popper_element.attr('title', tooltip)
-
+      
     popper_element.on("show.bs.popover", lambda e: _visible_popovers.update({popper_id: popper_element}))\
                   .on("hide.bs.popover", lambda e: _visible_popovers.pop(popper_id, None))\
                   .addClass('anvil-popover')\
@@ -87,12 +87,18 @@ def pop(self, behavior):
         return _is_visible(popper_element)
     elif behavior is 'update':
         return _update_positions()
+    if behavior is 'hide':
+        popper_element.data('bs.popover').inState.click = False # see bug https://github.com/twbs/bootstrap/issues/16732
+    elif behavior is 'show':
+        popper_element.data('bs.popover').inState.click = True
+    elif behavior is 'toggle':
+        current = popper_element.data('bs.popover').inState.click
+        popper_element.data('bs.popover').inState.click = not current
     try:
         popper_element.popover(behavior)
     except:
         raise ValueError('unrecognized behavior: {}'.format(behavior))
-
-
+    
 # this is the default behavior
 def dismiss_on_outside_click(dismiss=True):
     """hide popovers when a user clicks outside the popover
@@ -170,7 +176,7 @@ def _get_random_string(_len):
 
 _visible_popovers = {}
 
-_template = '<div class="popover anvil-popover" role="tooltip" popover_id={} style="max-width: {};"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+_template = '<div class="popover anvil-popover" role="tooltip" popover_id={} style="max-width:{}; "><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
 
 # temp style for updating popovers without transition animations
 _S("""<style>
