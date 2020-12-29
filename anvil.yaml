@@ -1,4 +1,5 @@
 services: []
+startup: {type: module, module: popover}
 package_name: popover
 allow_embedding: false
 name: popover

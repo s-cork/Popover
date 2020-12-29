@@ -1,5 +1,5 @@
 import anvil as _anvil
-from anvil.js.window import jQuery as _S
+from anvil.js.window import jQuery as _S, window as _window, document as _document
 """
     popover
     Copyright 2020 Stu Cork
@@ -131,7 +131,21 @@ def _update_positions(*args):
                   .removeClass("PopNoTransition")
 
 
-_anvil.js.window.window.addEventListener('resize', _update_positions)
+_window.addEventListener('resize', _update_positions)
+
+
+def _hide(popover_id, visible_popovers):
+    popper = visible_popovers[popover_id].popover('hide')
+    # hack for click https://github.com/twbs/bootstrap/issues/16732
+    try: popper.data('bs.popover').inState.click = False
+    except: pass
+      
+def _hide_all(e):
+  visible_popovers = _visible_popovers.copy()
+  for popover_id in visible_popovers:  # use copy since we don't want the dict to change size
+      _hide(popover_id, visible_popovers)
+
+_window.addEventListener('scroll', _hide_all, True)
 
 
 def _is_visible(popper_element):
@@ -156,12 +170,7 @@ def _hide_popovers_on_outside_click(e):
     visible_popovers = _visible_popovers.copy()
     for popover_id in visible_popovers:  # use copy since we don't want the dict to change size
         if nearest_id is not popover_id:
-            popper = visible_popovers[popover_id].popover('hide')
-            try:
-                popper.data('bs.popover').inState.click = False
-                # hack for click https://github.com/twbs/bootstrap/issues/16732
-            except:
-                pass
+            _hide(popover_id, visible_popovers)
 
 
 # make this the default behaviour
