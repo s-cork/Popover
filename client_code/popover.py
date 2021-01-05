@@ -170,7 +170,6 @@ def _hide_popovers_on_outside_click(e):
         nearest_id = _S(target).closest('.anvil-popover').attr('popover_id')
     visible_popovers = _visible_popovers.copy()
     for popover_id in visible_popovers:  # use copy since we don't want the dict to change size
-        print(popover_id, nearest_id)
         if nearest_id is not popover_id:
             _hide(popover_id, visible_popovers)
 
