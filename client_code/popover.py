@@ -104,9 +104,10 @@ def dismiss_on_outside_click(dismiss=True):
     """hide popovers when a user clicks outside the popover
     this is the default behavior 
     """
-    _S('body').off('click', _hide_popovers_on_outside_click)
+    _document.body.removeEventListener('click', _hide_popovers_on_outside_click)
     if dismiss:
-        _S('body').on('click', _hide_popovers_on_outside_click)
+        _document.body.addEventListener('click', _hide_popovers_on_outside_click, True)
+      
 
 
 _default_max_width = ''
@@ -169,6 +170,7 @@ def _hide_popovers_on_outside_click(e):
         nearest_id = _S(target).closest('.anvil-popover').attr('popover_id')
     visible_popovers = _visible_popovers.copy()
     for popover_id in visible_popovers:  # use copy since we don't want the dict to change size
+        print(popover_id, nearest_id)
         if nearest_id is not popover_id:
             _hide(popover_id, visible_popovers)
 
