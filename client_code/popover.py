@@ -119,7 +119,7 @@ def set_default_max_width(width):
     _default_width = width
 
 
-for _ in [_anvil.Button, _anvil.Link, _anvil.Label]:
+for _ in [_anvil.Button, _anvil.Link, _anvil.Label, _anvil.Image]:
     _.popover = popover
     _.pop = pop
 
