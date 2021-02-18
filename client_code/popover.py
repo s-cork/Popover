@@ -26,7 +26,8 @@ def popover(self, content,
             trigger='click',
             animation=True,
             delay={"show": 100, "hide": 100},
-            max_width=None
+            max_width=None,
+            auto_dismiss=True
             ):
     """should be called by a button or link
     content - either text or an anvil component or Form
@@ -67,7 +68,7 @@ def popover(self, content,
         # otherwise the tooltip doesn't work for Buttons
         popper_element.attr('title', tooltip)
       
-    popper_element.on("show.bs.popover", lambda e: _visible_popovers.update({popper_id: popper_element}))\
+    popper_element.on("show.bs.popover", lambda e: _visible_popovers.update({popper_id: popper_element}) if auto_dismiss else None)\
                   .on("hide.bs.popover", lambda e: _visible_popovers.pop(popper_id, None))\
                   .addClass('anvil-popover')\
                   .attr('popover_id', popper_id)
