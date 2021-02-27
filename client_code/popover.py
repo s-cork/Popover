@@ -19,7 +19,6 @@ from anvil.js.window import jQuery as _S, window as _window, document as _docume
     https://bootstrapdocs.com/v3.3.6/docs/javascript/#popovers
 """
 
-
 def popover(self, content,
             title='',
             placement='right',
@@ -51,6 +50,16 @@ def popover(self, content,
 
     popper_id = _get_random_string(5)
     popper_element = _get_jquery_popper_element(self)
+    
+    stickyhover = trigger == 'stickyhover'
+    if stickyhover:
+        trigger = 'manual' 
+        popper_element.on('mouseenter', lambda e: None if pop(self, 'is_visible') else pop(self, 'show'))\
+                      .on('mouseleave', lambda e: None if _S(f'[popover_id={popper_id}]:hover') else pop(self, 'hide'))
+        _set_sticky_hover()
+        _sticky_popovers.add(popper_id)
+      
+
     popper_element.popover({
         'content': content,
         'title': title,
@@ -125,6 +134,21 @@ for _ in [_anvil.Button, _anvil.Link, _anvil.Label, _anvil.Image]:
     _.pop = pop
 
 ######## helper functions ########
+
+_sticky_popovers = set()
+
+def _sticky_leave(e):
+    popper_element = None
+    popover_id = _S(e.currentTarget).attr('popover_id')
+    if popover_id in _sticky_popovers and not _S(f'[popover_id={popover_id}]:hover'):
+        popper_element = _visible_popovers.get(popover_id)
+    if popper_element is not None:
+        popper_element.data('bs.popover').inState.click = False # see bug https://github.com/twbs/bootstrap/issues/16732
+        popper_element.popover('hide')
+            
+def _set_sticky_hover():
+    if not _sticky_popovers:
+        _S('body').on('mouseleave', '.popover', _sticky_leave)
 
 
 def _update_positions(*args):
