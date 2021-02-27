@@ -55,7 +55,7 @@ def popover(self, content,
     if stickyhover:
         trigger = 'manual' 
         popper_element.on('mouseenter', lambda e: None if pop(self, 'is_visible') else pop(self, 'show'))\
-                      .on('mouseleave', lambda e: None if _S(f'[popover_id={popper_id}]:hover') else pop(self, 'hide'))
+                      .on('mouseleave', lambda e: None if _S('[popover_id={popper_id}]:hover'.format(popper_id)) else pop(self, 'hide'))
         _set_sticky_hover()
         _sticky_popovers.add(popper_id)
       
@@ -140,7 +140,7 @@ _sticky_popovers = set()
 def _sticky_leave(e):
     popper_element = None
     popover_id = _S(e.currentTarget).attr('popover_id')
-    if popover_id in _sticky_popovers and not _S(f'[popover_id={popover_id}]:hover'):
+    if popover_id in _sticky_popovers and not _S('[popover_id={popover_id}]:hover'.format(popover_id)):
         popper_element = _visible_popovers.get(popover_id)
     if popper_element is not None:
         popper_element.data('bs.popover').inState.click = False # see bug https://github.com/twbs/bootstrap/issues/16732
