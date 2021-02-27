@@ -51,8 +51,7 @@ def popover(self, content,
     popper_id = _get_random_string(5)
     popper_element = _get_jquery_popper_element(self)
     
-    stickyhover = trigger == 'stickyhover'
-    if stickyhover:
+    if trigger is 'stickyhover':
         trigger = 'manual' 
         popper_element.on('mouseenter', lambda e: None if pop(self, 'is_visible') else pop(self, 'show'))\
                       .on('mouseleave', lambda e: None if _S('[popover_id={}]:hover'.format(popper_id)) else pop(self, 'hide'))
