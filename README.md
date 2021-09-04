@@ -5,7 +5,7 @@ This library is maintained for legacy purposes.
 It is now fully maintained as part of [anvil-extras](https://github.com/anvilistas/anvil-extras).
 Documentation is also available at anvil-extras.
 
-This library can be used indivudually as a [third party dependency](https://anvil.works/forum/t/third-party-dependencies/8712) using the code `RLLQ34XAY246K5R3`.
+This library can be used individually as a [third party dependency](https://anvil.works/forum/t/third-party-dependencies/8712) using the code `RLLQ34XAY246K5R3`.
 (If using this library replace `from anvil_extras import popover` with `from popover import popover`)
 
 |||
