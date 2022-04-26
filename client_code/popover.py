@@ -13,15 +13,26 @@
 # https://getbootstrap.com/docs/3.4/javascript/#popovers
 #
 
+from time import sleep
+
 import anvil as _anvil
 from anvil.js import window as _window
 from anvil.js.window import Promise as _Promise
 from anvil.js.window import document as _document
 from anvil.js.window import jQuery as _S
 
-__version__ = "1.8.1"
+from .utils._component_helpers import walk as _walk
 
-__all__ = ["popover", "pop", "dismiss_on_outside_click", "set_default_max_width"]
+__version__ = "2.1.0"
+
+__all__ = [
+    "popover",
+    "pop",
+    "dismiss_on_outside_click",
+    "dismiss_on_scroll",
+    "set_default_max_width",
+    "set_default_container",
+]
 
 
 def popover(
@@ -34,10 +45,12 @@ def popover(
     delay={"show": 100, "hide": 100},
     max_width=None,
     auto_dismiss=True,
+    dismiss_on_scroll=True,
+    container=None,
 ):
     """should be called by a button or link
     content - either text or an anvil component or Form
-    placement -  right, left, top, bottom (for left/right best to have links and buttons inside flow panels)
+    placement -  right, left, top, bottom, auto (for left/right best to have links and buttons inside flow panels)
     trigger - manual, focus, hover, click (can be a combination of two e.g. 'hover focus')
     animation - True or False
     delay - {'show': 100, 'hide': 100}
@@ -62,18 +75,15 @@ def popover(
     # We could be in the middle of a 'destroy'
     _wait_for_transition(popper_element)
 
-    if _has_popover(popper_element):
-        msg = (
-            "Warning: attempted to create a popover on a component that already has one. This will have no effect.\n"
-            "Destroy the popover before creating a new one using component.pop('destroy').\n"
-            "Or, use has_popover() to check if this component aleady has a popover."
-        )
-        print(msg)
+    has_popover = _has_popover(popper_element)
+    _check_warnings(has_popover, component)
+    if has_popover:
         # return here since adding a new popover has no effect
         return
 
     popper_id = _get_next_id()
     max_width = _default_max_width if max_width is None else max_width
+    container = _default_container if container is None else container
 
     _add_transition_behaviour(component, popper_element, popper_id)
 
@@ -96,7 +106,7 @@ def popover(
             "delay": delay,
             "html": html,
             "template": _template.format(popper_id, max_width),
-            "container": "body",
+            "container": container,
             "sanitize": False,
         }
     )
@@ -106,15 +116,20 @@ def popover(
         # otherwise the tooltip doesn't work for Buttons
         popper_element.attr("title", tooltip)
 
-    popper_element.addClass("anvil-popover")
-    popper_element.attr("popover_id", popper_id)
+    make_popover = _popover_maker(popper_id)
+    make_popover(popper_element)
     popper_element.data(
         "ae.popover",
         {
             "autoDismiss": bool(auto_dismiss),
+            "autoScrollHide": bool(dismiss_on_scroll),
             "inTransition": None,
         },
     )
+
+    if component is not None:
+        for c in _walk(component):
+            c.raise_event("x-popover-init", init_node=make_popover)
 
 
 def pop(self, behavior):
@@ -142,9 +157,19 @@ def dismiss_on_outside_click(dismiss=True):
     """hide popovers when a user clicks outside the popover
     this is the default behavior
     """
-    _document.body.removeEventListener("click", _hide_popovers_on_outside_click)
+    _document.body.removeEventListener("click", _hide_popovers_on_outside_click, True)
     if dismiss:
         _document.body.addEventListener("click", _hide_popovers_on_outside_click, True)
+
+
+# this is the default behavior
+def dismiss_on_scroll(dismiss=True):
+    """hide popovers when a user scrolls. This is the default behavior
+    You should change the default container if you set this globally to False.
+    """
+    _window.removeEventListener("scroll", _hide_on_scroll, True)
+    if dismiss:
+        _window.addEventListener("scroll", _hide_on_scroll, True)
 
 
 _default_max_width = ""
@@ -154,6 +179,17 @@ def set_default_max_width(width):
     """update the default max width - this is 276px by default - useful for wider components"""
     global _default_width
     _default_width = width
+
+
+_default_container = "body"
+
+
+def set_default_container(selector_or_element):
+    """The default container for popovers is the body page.
+    In advanced set ups when the popovers can scroll with the element, you will want to change this.
+    This can also be set per popover"""
+    global _default_container
+    _default_container = selector_or_element
 
 
 def has_popover(component):
@@ -171,6 +207,13 @@ _anvil.Component.pop = pop
 ######## helper functions ########
 
 _popper_count = 0
+
+
+def _popover_maker(id):
+    def _make_popover_element(dom_node):
+        _S(dom_node).addClass("anvil-popover").attr("popover_id", id)
+
+    return _make_popover_element
 
 
 def _get_next_id():
@@ -192,6 +235,32 @@ def _set_data(popper_element, attr, value):
         data[attr] = value
 
 
+_warnings = {}
+
+
+def _check_warnings(has_popover, component):
+    if has_popover and not _warnings.get("has_pop"):
+        msg = (
+            "Warning: attempted to create a popover on a component that already has one. This will have no effect.\n"
+            "Destroy the popover before creating a new one using component.pop('destroy').\n"
+            "Or, use has_popover() to check if this component aleady has a popover before creating a new one."
+        )
+        print(msg)
+        _warnings["has_pop"] = True
+    elif (
+        component is not None
+        and component.parent is not None
+        and type(component.parent) is not _anvil.Container
+        and not _warnings.get("has_parent")
+    ):
+        # if the parent is an anvil Container then it's probably an internal issue
+        print(
+            "Warning: the popover content already has a parent this can cause unusual behaviour.\n"
+            "Support for this may be removed in a future version."
+        )
+        _warnings["has_parent"] = True
+
+
 def _add_transition_behaviour(component, popper_element, popper_id):
     # clean up our previous event handlers
     popper_element.off(
@@ -209,17 +278,23 @@ def _add_transition_behaviour(component, popper_element, popper_id):
 
         popper_element.on("shown.bs.popover", f)
 
-    def show_in_transition(e):
-        _set_data(popper_element, "inTransition", _Promise(resolve_shown))
-        _visible_popovers[popper_id] = popper_element
+    def fire_show_event(e):
+        if component is None:
+            return
         open_form = _anvil.get_open_form()
         if open_form is not None and fake_container.parent is None:
             open_form.add_component(fake_container)
-        if component is not None and component.parent is None:
+        if component.parent is None:
             # we add the component to a Container component
             # this doesn't really add it to the dom
             # it just allows us to use anvil's underlying show hide architecture
             fake_container.add_component(component)
+
+    popper_element.on("inserted.bs.popover", fire_show_event)
+
+    def show_in_transition(e):
+        _set_data(popper_element, "inTransition", _Promise(resolve_shown))
+        _visible_popovers[popper_id] = popper_element
 
     popper_element.on("show.bs.popover", show_in_transition)
 
@@ -242,9 +317,30 @@ def _add_transition_behaviour(component, popper_element, popper_id):
 
 
 def _wait_for_transition(popper_element):
+    bs_data = popper_element.data("bs.popover")
+    if bs_data is None:
+        return
+
     transition = _get_data(popper_element, "inTransition")
     if transition is not None:
         _anvil.js.await_promise(transition)
+        return
+
+    timeout = bs_data.get("timeout")
+    # bs sets a timeout when it does a toggle with a delay
+    if timeout is None:
+        return
+
+    delay = None
+    hoverState = bs_data.get("hoverState")
+    if hoverState == "in":
+        delay = bs_data.options.delay.show
+    elif hoverState == "out":
+        delay = bs_data.options.delay.hide
+
+    if delay is not None:
+        sleep(delay / 1000)
+        _wait_for_transition(popper_element)
 
 
 _sticky_popovers = set()
@@ -298,9 +394,13 @@ _window.addEventListener("resize", _update_positions)
 _scrolling = False
 
 
-def _hide_on_scroll(*e):
+def _hide_on_scroll(e):
     global _scrolling
-    if _scrolling or not _visible_popovers:
+    if (
+        _scrolling
+        or not _visible_popovers
+        or (e.target is not _document and e.target.closest(".anvil-popover"))
+    ):
         return
 
     _scrolling = True
@@ -310,16 +410,14 @@ def _hide_on_scroll(*e):
         transitions = []
         try:
             for popper_element in _visible_popovers.copy().values():
-                _popper_execute(popper_element, "hide")
-                transitions.append(_get_data(popper_element, "inTransition"))
+                if _get_data(popper_element, "autoScrollHide", True):
+                    _popper_execute(popper_element, "hide")
+                    transitions.append(_get_data(popper_element, "inTransition"))
             _anvil.js.await_promise(_Promise.all(transitions))
         finally:
             _scrolling = False
 
     _window.requestAnimationFrame(do_hide)
-
-
-_window.addEventListener("scroll", _hide_on_scroll, True)
 
 
 def _popper_execute(popper_element, behavior: str):
@@ -374,6 +472,7 @@ def _hide_popovers_on_outside_click(e):
 
 # make this the default behaviour
 dismiss_on_outside_click(True)
+dismiss_on_scroll(True)
 
 _visible_popovers = {}
 
